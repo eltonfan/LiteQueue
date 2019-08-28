@@ -67,7 +67,7 @@ namespace LiteQueue
         /// Adds a single item to queue. See <see cref="Enqueue(IEnumerable{T})"/> for adding a batch.
         /// </summary>
         /// <param name="item"></param>
-        public void Enqueue(T item)
+        public QueueEntry<T> Enqueue(T item)
         {
             if (item == null)
             {
@@ -77,13 +77,15 @@ namespace LiteQueue
             QueueEntry<T> insert = new QueueEntry<T>(item);
 
             _collection.Insert(insert);
+
+            return insert;
         }
 
         /// <summary>
         /// Adds a batch of items to the queue. See <see cref="Enqueue(T)"/> for adding a single item.
         /// </summary>
         /// <param name="items"></param>
-        public void Enqueue(IEnumerable<T> items)
+        public List<QueueEntry<T>> Enqueue(IEnumerable<T> items)
         {
             List<QueueEntry<T>> inserts = new List<QueueEntry<T>>();
             foreach (var item in items)
@@ -92,6 +94,8 @@ namespace LiteQueue
             }
 
             _collection.InsertBulk(inserts);
+
+            return inserts;
         }
 
         /// <summary>
